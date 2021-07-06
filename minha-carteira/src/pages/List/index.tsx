@@ -1,10 +1,31 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Container, Content, Filters } from './style'
 import ContentHeader from '../../components/ContentHeader';
 import SelectInput from '../../components/SelectInput';
 import HistoryFinanceCard from './../../components/HistoryFinanceCard/index';
 
-const List: React.FC = () => {
+interface IRouteParams {
+  match: {
+    params: {
+      type: string;
+    }
+  }
+}
+
+const List: React.FC<IRouteParams> = ({ match }) => {
+
+  const { type } = match.params
+
+  const ContentHeaderProps = useMemo(() => {
+    return type === 'entry-balance' ? 
+      {
+        title: 'Entradas',
+        lineColor: '#F7931B'
+      } :  {
+        title: 'Saídas',
+        lineColor: '#E44C4E'
+      }
+  }, [type]);
 
   const months = [
     {value: 7, label: 'Julho'},
@@ -20,7 +41,7 @@ const List: React.FC = () => {
 
   return (
     <Container>
-      <ContentHeader title="Entradas" lineColor="#484">
+      <ContentHeader title={ContentHeaderProps.title} lineColor={ContentHeaderProps.lineColor}>
           <SelectInput options={months}/>
           <SelectInput options={years}/>
       </ContentHeader>
@@ -39,6 +60,102 @@ const List: React.FC = () => {
         </button>
       </Filters>
       <Content>
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
+        <HistoryFinanceCard
+          tagColor="#E44C4E"
+          title="Conta de luz"
+          subtitle="27/07/2020"
+          amount="R$ 130,00"
+        />
         <HistoryFinanceCard
           tagColor="#E44C4E"
           title="Conta de luz"
