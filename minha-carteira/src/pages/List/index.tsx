@@ -7,7 +7,8 @@ import gains from './../../repositories/gains';
 import expenses from './../../repositories/expenses';
 import formatCurrency from './../../utils/formatCurrent';
 import formatDate from './../../utils/formatDate';
-
+import months from '../../utils/months';
+import { v4 as uuidv4 } from 'uuid';
 interface IRouteParams {
   match: {
     params: {
@@ -27,7 +28,7 @@ interface IData {
 
 const List: React.FC<IRouteParams> = ({ match }) => {
   const [data, setData] = useState<IData[]>([]);
-  const [monthSelected, setMonthSelected] = useState<string>(String(new Date().getMonth() + 1));
+  const [monthSelected, setMonthSelected] = useState<string>(String(new Date().getMonth()));
   const [yearSelected, setYearSelected] = useState<string>(String(new Date().getFullYear()));
 
   const { type } = match.params
@@ -46,24 +47,41 @@ const List: React.FC<IRouteParams> = ({ match }) => {
   const listData = useMemo(() => {
     return type === 'entry-balance' ? gains : expenses
   }, [type])
+  
+  const listMonths = useMemo(() => {
+    return months.map((month: string, index: number)=> {
+      return {
+        value: index + '',
+        label: month
+      }
+    })
+  }, []);
 
-  const months = [
-    {value: 1, label: 'Janeiro'},
-    {value: 5, label: 'Maio'},
-    {value: 8, label: 'Agosto'},
-    {value: 7, label: 'Julho'},
-    {value: 9, label: 'Setembro'}
-  ];
+  const years = useMemo(() => {
+    let uniqueYears:number[] = [];
 
-  const years = [
-    {value: 2019, label: 2019},
-    {value: 2021, label: 2021},
-    {value: 2020, label: 2020},
-    {value: 2018, label: 2018}
-  ];
+    listData.forEach(item => {
+      const date = new Date(item.date);
+
+      const year = date.getFullYear();
+      
+      if(!uniqueYears.includes(year)) {
+        uniqueYears.push(year)
+      }
+
+    });
+    
+    return uniqueYears.map(year => {
+      return {
+        value: year,
+        label: year
+      }
+    })
+
+  }, [listData]);
   
   useEffect(() => {
-    
+
     const filteredDate = listData.filter(item => {
       const date = new Date(item.date);
       const month = String(date.getMonth() + 1);
@@ -72,7 +90,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
     })
     const formatedDate = filteredDate.map((itemMap) => {
       return  {
-        id: String(new Date().getTime()) + itemMap.amount,
+        id: uuidv4(),
         description: itemMap.description,
         amountFormated: formatCurrency(Number(itemMap.amount)),
         frequency: itemMap.frequency,
@@ -86,7 +104,7 @@ const List: React.FC<IRouteParams> = ({ match }) => {
   return (
     <Container>
       <ContentHeader title={ContentHeaderProps.title} lineColor={ContentHeaderProps.lineColor}>
-          <SelectInput options={months} defaultValue={monthSelected} onChange={(e) => setMonthSelected(e.target.value)}/>
+          <SelectInput options={listMonths} defaultValue={monthSelected} onChange={(e) => setMonthSelected(e.target.value)}/>
           <SelectInput options={years} defaultValue={yearSelected} onChange={(e) => setYearSelected(e.target.value)}/>
       </ContentHeader>
       <Filters>
